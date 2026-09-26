@@ -34,11 +34,21 @@ def get_model():
     return model
 
 
+USD_TO_INR = 83.0  # fixed reference rate for display only, not looked up live
+
 st.set_page_config(page_title="Medical Cost Prediction", page_icon="🏥")
 st.title("🏥 Medical Cost Prediction")
 st.caption(
     "Predicts individual medical insurance charges from demographic and "
     "health attributes. Random Forest regressor, test R² = 0.868."
+)
+st.info(
+    "Trained on the classic Kaggle **US health-insurance benchmark dataset** "
+    "(charges in USD, region = US census regions). The INR figure below is a "
+    "straight currency conversion of that USD prediction for convenience — "
+    "not a separate India-market cost model, since US and Indian healthcare "
+    "pricing aren't comparable 1:1.",
+    icon="ℹ️",
 )
 
 model = get_model()
@@ -53,12 +63,18 @@ with col2:
     smoker = st.selectbox("Smoker", ["no", "yes"])
     region = st.selectbox("Region", ["southwest", "southeast", "northwest", "northeast"])
 
+currency = st.radio("Display currency", ["USD", "INR (converted)"], horizontal=True)
+
 if st.button("Predict charges", type="primary"):
     row = pd.DataFrame(
         [{"age": age, "bmi": bmi, "children": children, "sex": sex, "smoker": smoker, "region": region}]
     )
     prediction = model.predict(row)[0]
-    st.metric("Predicted medical charges", f"${prediction:,.2f}")
+    if currency == "USD":
+        st.metric("Predicted medical charges", f"${prediction:,.2f}")
+    else:
+        st.metric("Predicted medical charges (converted)", f"₹{prediction * USD_TO_INR:,.0f}")
+        st.caption(f"(${prediction:,.2f} × {USD_TO_INR:.0f} reference rate)")
 
 st.divider()
 st.caption("Source: [GitHub repo](https://github.com/mukulkatewa/medical-cost-prediction)")
