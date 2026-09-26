@@ -1,6 +1,6 @@
 # Medical Cost Prediction
 
-**Live demo:** https://medical-cost-prediction.streamlit.app
+**Live demo:** https://medical-cost-prediction-s6qe5xjf8tg2t3szb2hbj3.streamlit.app
 
 Predicts individual medical insurance charges from demographic and health
 attributes (age, sex, BMI, children, smoker status, region) using a set of
