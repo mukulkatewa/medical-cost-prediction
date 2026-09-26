@@ -1,5 +1,7 @@
 # Medical Cost Prediction
 
+**Live demo:** https://medical-cost-prediction.streamlit.app
+
 Predicts individual medical insurance charges from demographic and health
 attributes (age, sex, BMI, children, smoker status, region) using a set of
 regression models, with the best performer selected automatically on a
